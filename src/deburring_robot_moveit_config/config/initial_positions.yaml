@@ -1,0 +1,18 @@
+# Default initial positions for iiwa_with_rgbd's ros2_control fake system
+
+initial_positions:
+  lbr_A1: 0
+  lbr_A2: 0.3491
+  lbr_A3: 0
+  lbr_A4: -1.222
+  lbr_A5: 0
+  lbr_A6: 1.5708
+  lbr_A7: 0
+
+  # lbr_A1: 0
+  # lbr_A2: 0
+  # lbr_A3: 0
+  # lbr_A4: 0
+  # lbr_A5: 0
+  # lbr_A6: 0
+  # lbr_A7: 0

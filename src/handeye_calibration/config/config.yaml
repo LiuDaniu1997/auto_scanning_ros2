@@ -1,0 +1,18 @@
+camera_info_path: "src/handeye_calibration/config/camera_info.yaml"
+image_data_folder: "data/img/"
+aruco_marker_side_length: 0.1
+
+image_topic: "/camera/image"
+
+handeye_samples_file_path: "src/handeye_calibration/data/handeye_samples.yaml"
+handeye_result_path: "src/handeye_calibration/data/handeye_result.yaml"
+
+# marker position
+marker_pos_x: 0.5
+marker_pos_y: 0.0
+marker_pos_z: 0
+
+# robot configuration
+handeye_base_link: "lbr_link_0"
+handeye_ee: "lbr_link_ee"
+handeye_cam_link: "handeye_camera_link" # used for handeye calibration result test

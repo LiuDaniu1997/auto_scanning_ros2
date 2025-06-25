@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="iiwa14">
+    <xacro:macro name="iiwa_system_interface" params="joint_limits initial_positions">
+        <ros2_control name="lbr_system_interface" type="system">
+            <!-- ros2_control Gazebo -->
+            <hardware>
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+            </hardware>
+
+            <xacro:property name="PI" value="3.14159265359" />
+
+            <!-- define joints and command/state interfaces for each joint -->
+            <xacro:macro name="joint_interface"
+                params="name min_position max_position">
+                <joint name="${name}">
+                    <command_interface name="position">
+                        <param name="min">${min_position}</param>
+                        <param name="max">${max_position}</param>
+                    </command_interface>
+                    <state_interface name="position">
+                        <param name="initial_value">
+                            ${initial_positions[name]}</param>
+                    </state_interface>
+                </joint>
+            </xacro:macro>
+
+            <xacro:joint_interface name="lbr_A1"
+                min_position="${joint_limits['A1']['lower'] * PI / 180}"
+                max_position="${joint_limits['A1']['upper'] * PI / 180}" />
+            <xacro:joint_interface name="lbr_A2"
+                min_position="${joint_limits['A2']['lower'] * PI / 180}"
+                max_position="${joint_limits['A2']['upper'] * PI / 180}" />
+            <xacro:joint_interface name="lbr_A3"
+                min_position="${joint_limits['A3']['lower'] * PI / 180}"
+                max_position="${joint_limits['A3']['upper'] * PI / 180}" />
+            <xacro:joint_interface name="lbr_A4"
+                min_position="${joint_limits['A4']['lower'] * PI / 180}"
+                max_position="${joint_limits['A4']['upper'] * PI / 180}" />
+            <xacro:joint_interface name="lbr_A5"
+                min_position="${joint_limits['A5']['lower'] * PI / 180}"
+                max_position="${joint_limits['A5']['upper'] * PI / 180}" />
+            <xacro:joint_interface name="lbr_A6"
+                min_position="${joint_limits['A6']['lower'] * PI / 180}"
+                max_position="${joint_limits['A6']['upper'] * PI / 180}" />
+            <xacro:joint_interface name="lbr_A7"
+                min_position="${joint_limits['A7']['lower'] * PI / 180}"
+                max_position="${joint_limits['A7']['upper'] * PI / 180}" />
+        </ros2_control>
+    </xacro:macro>
+</robot>

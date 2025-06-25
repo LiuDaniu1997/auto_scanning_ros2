@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- include gazebo specifications of camera-->
+    <xacro:include
+        filename="$(find deburring_robot_description)/gazebo/RGBD_camera/camera_gazebo.xacro" />
+
+    <xacro:macro name="box_inertia" params="m w h d">
+        <inertial>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}" />
+            <mass value="${m}" />
+            <inertia ixx="${(m/12) * (h*h + d*d)}" ixy="0.0" ixz="0.0" iyy="${(m/12) * (w*w + d*d)}"
+                iyz="0.0" izz="${(m/12) * (w*w + h*h)}" />
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="rgbd_camera" params="arm_id gazebo:=true">
+        <!-- data of the mounting_hole between the adapter and the camera-->
+        <xacro:property name="mounting_hole_x_offset" value="0.072" />
+        <xacro:property name="mounting_hole_z_offset" value="0.024" />
+
+        <!-- data of the camera -->
+        <xacro:property name="camera_length" value="0.265" />
+        <xacro:property name="camera_width" value="0.057" />
+        <xacro:property name="camera_height" value="0.1" />
+
+        <xacro:property name="mounting_hole_camera_offset" value="0.014" />
+
+        <!-- camera adapter -->
+        <link name="camera_adapter">
+            <visual>
+                <origin rpy="${pi} 0 ${pi}"
+                    xyz="${mounting_hole_x_offset} 0 ${-mounting_hole_z_offset}" />
+                <geometry>
+                    <mesh
+                        filename="file://$(find deburring_robot_description)/meshes/RGBD_camera/iiwa_adapter.STL"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="LightGrey">
+                    <color rgba="0.7 0.7 0.7 1.0" />
+                </material>
+            </visual>
+            <inertial>
+                <origin xyz="0.04556 0.0 -0.01576" rpy="0 0 0" />
+                <mass value="0.11721" />
+                <inertia
+                    ixx="0.00011173473" ixy="0.0" ixz="-0.00002504007"
+                    iyy="0.00011737470" iyz="0.0"
+                    izz="0.00018314711" />
+            </inertial>
+            <collision>
+                <origin rpy="${pi} 0 ${pi}"
+                    xyz="${mounting_hole_x_offset} 0 ${-mounting_hole_z_offset}" />
+                <geometry>
+                    <mesh
+                        filename="file://$(find deburring_robot_description)/meshes/RGBD_camera/iiwa_adapter.STL"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="camera_adapter_joint" type="fixed">
+            <origin rpy="0 0 0" xyz="${-mounting_hole_x_offset} 0 ${mounting_hole_z_offset}" />
+            <parent link="${arm_id}_link_ee" />
+            <child link="camera_adapter" />
+        </joint>
+
+        <!-- camera -->
+        <link name="camera_base_link">
+            <visual>
+                <origin rpy="0 ${-pi/2} 0"
+                    xyz="${-(camera_height - mounting_hole_camera_offset)} 0 ${-camera_width/2}" />
+                <geometry>
+                    <mesh
+                        filename="file://$(find deburring_robot_description)/meshes/RGBD_camera/PRO_S.STL"
+                        scale="0.001 0.001 0.001" />
+                </geometry>
+                <material name="LightGrey">
+                    <color rgba="0.7 0.7 0.7 1.0" />
+                </material>
+            </visual>
+            <xacro:box_inertia m="1.6" w="${camera_length}" d="${camera_height}" h="${camera_width}" />
+            <collision>
+                <origin rpy="0 0 0"
+                    xyz="${-camera_height/2} 0 0" />
+                <geometry>
+                    <!-- length, width, height -->
+                    <box size="${camera_height} ${camera_length} ${camera_width}" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="camera_base_link_joint" type="fixed">
+            <origin rpy="0 ${-pi/2} 0"
+                xyz="${-camera_width/2} 0 ${camera_height - mounting_hole_camera_offset}" />
+            <parent link="camera_adapter" />
+            <child link="camera_base_link" />
+        </joint>
+
+        <!-- camera frame link -->
+        <link name="camera_optical_frame"></link>
+        <joint name="camera_optical_frame_joint" type="fixed">
+            <parent link="camera_base_link" />
+            <child link="camera_optical_frame" />
+            <origin rpy="${-pi/2} 0 ${-pi/2}" xyz="0 0 0" />
+        </joint>
+
+        <!-- Extensions -->
+        <xacro:camera_gazebo />
+    </xacro:macro>
+</robot>

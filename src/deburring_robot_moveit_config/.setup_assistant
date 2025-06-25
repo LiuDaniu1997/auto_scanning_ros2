@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: deburring_robot_description
+    relative_path: urdf/iiwa_with_rgbd.urdf.xacro
+  srdf:
+    relative_path: config/iiwa_with_rgbd.srdf
+  package_settings:
+    author_name: kai
+    author_email: kai.liu@tum.de
+    generated_timestamp: 1744876698
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

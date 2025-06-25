@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<!-- top level -->
+<robot name="iiwa_with_rgbd" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- include the lbr iiwa macro -->
+    <xacro:include filename="$(find deburring_robot_description)/urdf/iiwa14/iiwa14.xacro" />
+    <!-- include the camera macro -->
+    <xacro:include filename="$(find deburring_robot_description)/urdf/RGBD_camera/camera.xacro" />
+
+    <xacro:arg name="robot_name" default="lbr" />
+
+
+    <!-- iiwa -->
+    <xacro:iiwa14/>
+
+    <!-- RGBD camera -->
+    <xacro:rgbd_camera arm_id="$(arg robot_name)">
+    </xacro:rgbd_camera>
+
+    <!-- virtual joint -->
+    <link name="world"/>
+    <joint name="virtual_joint" type="fixed">
+        <parent link="world"/>
+        <child link="lbr_link_0"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+</robot>

@@ -1,0 +1,20 @@
+services:
+  deburring_robot_sim:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    image: deburring_robot_ws:latest
+    container_name: ros2_container
+    network_mode: host    
+    user: "1010:1010"
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - "${PWD}/src:/home/robot/deburring_robot_ws/src:rw"
+      - "${PWD}/data:/home/robot/deburring_robot_ws/data:rw"
+    working_dir: /home/robot/deburring_robot_ws
+    command: bash
+    entrypoint: ["/bin/bash", "-lc", "source install/setup.bash && colcon build && exec tail -f /dev/null"]

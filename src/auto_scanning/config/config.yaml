@@ -1,0 +1,11 @@
+point_cloud_save_path: "data/temp/"
+merged_point_cloud_save_path: "data/merged_point_cloud/"
+aligned_point_cloud_save_path: "data/aligned_point_cloud/"
+point_cloud_topic: "/depth_camera/points"
+
+tf_base_link: "lbr_link_0"
+tf_ee: "lbr_link_ee"
+tf_cam_base: "camera_base_link"
+tf_cam: "camera_optical_frame"
+
+handeye_result_file_path: "src/handeye_calibration/data/handeye_result.yaml"
